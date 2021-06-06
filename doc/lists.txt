@@ -1,0 +1,113 @@
+*lists.txt*    A Vim plugin to handle lists
+*lists.vim*
+
+Author:  Karl Yngve Lervåg <karl.yngve@gmail.com>
+License: MIT license {{{
+
+  Copyright (c) 2021 Karl Yngve Lervåg
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+
+}}}
+
+==============================================================================
+INTRODUCTION                                                      *lists-intro*
+
+This is a Vim plugin to manage text based lists. The plugin is inactive by
+default. It can be activated for a specific buffer with |:ListsEnable|. One
+can also specify to auto enable for specific filetypes with
+|g:lists_filetypes|.
+
+The functionality was earlier a part of |wiki.vim| [0] and implemented for my
+personal convenience. However, as someone pointed out [1], these features do
+not really have anything to do with the wiki functionality of |wiki.vim|. It
+is now therefore a separate plugin.
+
+[0]: https://github.com/lervag/wiki.vim
+[1]: https://github.com/lervag/wiki.vim/issues/131
+
+==============================================================================
+FEATURES                                                       *lists-features*
+
+The following is a list of the commands and mappings provided by |lists.vim|.
+
+*:ListsEnable*
+  Load |lists.vim| for the current buffer.
+
+  Note: This is the only global command. If |lists.vim| is not loaded, none of
+        the other features are available.
+
+*:ListsToggle*
+*<plug>(lists-toggle)*
+  Toggle a list item. The mapping works in both normal and insert mode.
+
+*:ListsMoveUp*
+*:ListsMoveDown*
+*<plug>(lists-moveup)*
+*<plug>(lists-movedown)*
+  Move current list item up/down through a list.
+
+*:ListsUniq*
+*<plug>(lists-uniq)*
+  Parse the current list and remove repeated entries recursively.
+
+*:ListsUniqLocal*
+*<plug>(lists-uniq-local)*
+  Similar to |:ListsUniq|, but only within the current list depth.
+
+*<plug>(lists-al)*
+*<plug>(lists-il)*
+  Text object for list items. The inner object is the current list item
+  including children, the outer object is the parent list item including all
+  its children.
+  The following mappings are available as visual mode and operator mode
+  mappings, i.e. |xmap| and |omap|.
+
+The default mappings are listed in the following table. The map mode is
+indicated by the first letters of the various map commands (|nmap|, |imap|,
+|omap|, and |xmap|).
+
+  -------------------------------------------------------------------~
+   PLUG                         DEFAULT         MODE~
+  -------------------------------------------------------------------~
+   |<plug>(lists-toggle)|         <c-s>           `in`
+   |<plug>(lists-moveup)|         <leader>wlk     `n`
+   |<plug>(lists-movedown)|       <leader>wlj     `n`
+   |<plug>(lists-uniq)|           <leader>wlu     `n`
+   |<plug>(lists-uniq-local)|     <leader>wlU     `n`
+   |<plug>(lists-al)|             al              `ox`
+   |<plug>(lists-il)|             il              `ox`
+  -------------------------------------------------------------------~
+
+==============================================================================
+CONFIGURATION                                                    *lists-config*
+
+*g:lists_filetypes*
+  List of filetypes for which |lists.vim| should be enabled.
+
+  Default: []
+
+*g:lists_todos*
+  A list of TODO toggles that may be toggled with |<plug>(lists-toggle)|, which
+  is by default mapped to `<c-s>`.
+
+  Default: `['TODO', 'DONE']`
+
+==============================================================================
+ vim:tw=78:ts=8:ft=help:norl:fdm=marker:
