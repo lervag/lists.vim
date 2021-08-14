@@ -51,7 +51,7 @@ function! s:get_list_items(opts) abort " {{{1
 
   let l:save_pos = getcurpos()
   call setpos('.', [0, l:lnum, l:cnum, 0])
-  let l:list_start = search(s:items_re, 'Wn')
+  let l:list_start = search(s:items_re, 'Wcn')
   if l:list_start == 0
         \ || l:list_start > l:save_pos[1]
     call setpos('.', l:save_pos)
