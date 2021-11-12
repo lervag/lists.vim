@@ -24,6 +24,12 @@ let s:item = {
       \}
 
 function! s:item.new(start, end) abort dict " {{{1
+  " This is a template and must be combined with a real item type!
+  if !has_key(self, 're_item')
+    echoerr 'THIS IS A GENERIC FUNCTION!'
+    return {}
+  endif
+
   let l:new = deepcopy(self)
   unlet l:new.new
 
@@ -32,12 +38,6 @@ function! s:item.new(start, end) abort dict " {{{1
   let l:new.lnum_last = l:new.lnum_end
   let l:new.text = getline(l:new.lnum_start, l:new.lnum_end)
   let l:new.indent = indent(a:start)
-
-  " This is a template and must be combined with a real item type!
-  if !has_key(self, 're_item')
-    echoerr 'THIS IS A GENERIC FUNCTION!'
-    return {}
-  endif
 
   let l:new.header = matchstr(l:new.text[0], self.re_item)
   let l:new.state = index(self.states, matchstr(l:new.text[0],
