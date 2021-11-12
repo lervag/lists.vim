@@ -22,6 +22,7 @@ let s:item = extend(lists#item#unordered#new(), {
 
 function! s:item.init() abort dict " {{{1
   let self.checked = match(self.text[0], self.re_item_checked) >= 0
+  let self.bullet = matchstr(self.header, self.re_bullet)
 endfunction
 
 " }}}1
