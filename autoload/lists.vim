@@ -16,17 +16,26 @@ function! lists#init() abort " {{{1
   command! -buffer ListsUniqLocal call lists#uniq(1)
   command! -buffer ListsShowItem  call lists#show_item()
 
-  nnoremap <silent><buffer> <plug>(lists-moveup)     :ListsMoveUp<cr>
-  nnoremap <silent><buffer> <plug>(lists-movedown)   :ListsMoveDown<cr>
-  nnoremap <silent><buffer> <plug>(lists-toggle)     :ListsToggle<cr>
-  nnoremap <silent><buffer> <plug>(lists-uniq)       :ListsUniq<cr>
-  nnoremap <silent><buffer> <plug>(lists-uniq-local) :ListsUniqLocal<cr>
-  nnoremap <silent><buffer> <plug>(lists-show-item)  :ListsShowItem<cr>
-  inoremap <silent><buffer> <plug>(lists-toggle)     <esc>:call lists#new_item()<cr>
-  onoremap <silent><buffer> <plug>(lists-al)         :call      lists#text_obj#list_element(0, 0)<cr>
-  xnoremap <silent><buffer> <plug>(lists-al)         :<c-u>call lists#text_obj#list_element(0, 1)<cr>
-  onoremap <silent><buffer> <plug>(lists-il)         :call      lists#text_obj#list_element(1, 0)<cr>
-  xnoremap <silent><buffer> <plug>(lists-il)         :<c-u>call lists#text_obj#list_element(1, 1)<cr>
+  command! -buffer -bang ListsToggleBullet
+        \ if empty(<q-bang>) |
+        \   call lists#bullet#toggle_all() |
+        \ else |
+        \   call lists#bullet#toggle_local() |
+        \ endif
+
+  nnoremap <silent><buffer> <plug>(lists-moveup)              :ListsMoveUp<cr>
+  nnoremap <silent><buffer> <plug>(lists-movedown)            :ListsMoveDown<cr>
+  nnoremap <silent><buffer> <plug>(lists-toggle)              :ListsToggle<cr>
+  nnoremap <silent><buffer> <plug>(lists-uniq)                :ListsUniq<cr>
+  nnoremap <silent><buffer> <plug>(lists-uniq-local)          :ListsUniqLocal<cr>
+  nnoremap <silent><buffer> <plug>(lists-show-item)           :ListsShowItem<cr>
+  inoremap <silent><buffer> <plug>(lists-toggle)              <esc>:call lists#new_item()<cr>
+  onoremap <silent><buffer> <plug>(lists-al)                  :call      lists#text_obj#list_element(0, 0)<cr>
+  xnoremap <silent><buffer> <plug>(lists-al)                  :<c-u>call lists#text_obj#list_element(0, 1)<cr>
+  onoremap <silent><buffer> <plug>(lists-il)                  :call      lists#text_obj#list_element(1, 0)<cr>
+  xnoremap <silent><buffer> <plug>(lists-il)                  :<c-u>call lists#text_obj#list_element(1, 1)<cr>
+  nnoremap <silent><buffer> <plug>(lists-bullet-toggle-all)   :call lists#bullet#toggle_all()<cr>
+  nnoremap <silent><buffer> <plug>(lists-bullet-toggle-local) :call lists#bullet#toggle_local()<cr>
 
   for [l:rhs, l:lhs] in items({
         \ '<plug>(lists-toggle)': '<c-s>',
@@ -35,6 +44,8 @@ function! lists#init() abort " {{{1
         \ '<plug>(lists-uniq)': '<leader>wlu',
         \ '<plug>(lists-uniq-local)': '<leader>wlU',
         \ '<plug>(lists-show-item)': '<leader>wls',
+        \ '<plug>(lists-bullet-toggle-all)': '<leader>wlt',
+        \ '<plug>(lists-bullet-toggle-local)': '<leader>wlT',
         \ 'i_<plug>(lists-toggle)': '<c-s>',
         \ 'o_<plug>(lists-al)': 'al',
         \ 'x_<plug>(lists-al)': 'al',

@@ -16,13 +16,13 @@ License: MIT license {{{
   The above copyright notice and this permission notice shall be included in
   all copies or substantial portions of the Software.
 
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
-  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
-  IN THE SOFTWARE.
+  The software is provided "as is", without warranty of any kind, express or
+  implied, including but not limited to the warranties of merchantability,
+  fitness for a particular purpose and noninfringement.  In no event shall the
+  authors or copyright holders be liable for any claim, damages or other
+  liability, whether in an action of contract, tort or otherwise, arising
+  from, out of or in connection with the software or the use or other dealings
+  in the software.
 
 }}}
 
@@ -57,6 +57,15 @@ The following is a list of the commands and mappings provided by |lists.vim|.
 *<plug>(lists-toggle)*
   Toggle a list item. The mapping works in both normal and insert mode.
 
+*:ListsToggleBullet*
+*<plug>(lists-bullet-toggle-all)*
+  Toggle the list bullet type between `-` and `*`. for the entire list.
+
+*:ListsToggleBullet!*
+*<plug>(lists-bullet-toggle-local)*
+  Toggle the list bullet type between `-` and `*` for the sibling list
+  entries.
+
 *:ListsMoveUp*
 *:ListsMoveDown*
 *<plug>(lists-moveup)*
@@ -84,15 +93,17 @@ indicated by the first letters of the various map commands (|nmap|, |imap|,
 |omap|, and |xmap|).
 
   -------------------------------------------------------------------~
-   PLUG                         DEFAULT         MODE~
+   PLUG                                DEFAULT         MODE~
   -------------------------------------------------------------------~
-   |<plug>(lists-toggle)|         <c-s>           `in`
-   |<plug>(lists-moveup)|         <leader>wlk     `n`
-   |<plug>(lists-movedown)|       <leader>wlj     `n`
-   |<plug>(lists-uniq)|           <leader>wlu     `n`
-   |<plug>(lists-uniq-local)|     <leader>wlU     `n`
-   |<plug>(lists-al)|             al              `ox`
-   |<plug>(lists-il)|             il              `ox`
+   |<plug>(lists-toggle)|                <c-s>           `in`
+   |<plug>(lists-moveup)|                <leader>wlk     `n`
+   |<plug>(lists-movedown)|              <leader>wlj     `n`
+   |<plug>(lists-uniq)|                  <leader>wlu     `n`
+   |<plug>(lists-uniq-local)|            <leader>wlU     `n`
+   |<plug>(lists-bullet-toggle-local)|   <leader>wlT     `n`
+   |<plug>(lists-bullet-toggle-all)|     <leader>wlt     `n`
+   |<plug>(lists-al)|                    al              `ox`
+   |<plug>(lists-il)|                    il              `ox`
   -------------------------------------------------------------------~
 
 ==============================================================================
