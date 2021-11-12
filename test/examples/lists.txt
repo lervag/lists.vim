@@ -15,9 +15,9 @@
 
 # List examples 2
 
-- TODO: Task 1
-- INPROGRESS: Task 2
-- DONE: Task 3
+* TODO: Task 1
+* INPROGRESS: Task 2
+* DONE: Task 3
 
 # List examples 3
 
