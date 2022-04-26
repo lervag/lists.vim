@@ -88,13 +88,13 @@ The following is a list of the commands and mappings provided by |lists.vim|.
   The following mappings are available as visual mode and operator mode
   mappings, i.e. |xmap| and |omap|.
 
-The default mappings are listed in the following table. The map mode is
-indicated by the first letters of the various map commands (|nmap|, |imap|,
-|omap|, and |xmap|).
+The default mappings are listed in the following table. To disable the default
+mappings, see |g:lists_enable_default_maps|. The map mode is indicated by the
+first letters of the various map commands (|nmap|, |imap|, |omap|, and
+|xmap|).
 
-  -------------------------------------------------------------------~
    PLUG                                DEFAULT         MODE~
-  -------------------------------------------------------------------~
+   ----                                -------         ----~
    |<plug>(lists-toggle)|                <c-s>           `in`
    |<plug>(lists-moveup)|                <leader>wlk     `n`
    |<plug>(lists-movedown)|              <leader>wlj     `n`
@@ -104,7 +104,6 @@ indicated by the first letters of the various map commands (|nmap|, |imap|,
    |<plug>(lists-bullet-toggle-all)|     <leader>wlt     `n`
    |<plug>(lists-al)|                    al              `ox`
    |<plug>(lists-il)|                    il              `ox`
-  -------------------------------------------------------------------~
 
 ==============================================================================
 CONFIGURATION                                                    *lists-config*
@@ -113,6 +112,12 @@ CONFIGURATION                                                    *lists-config*
   List of filetypes for which |lists.vim| should be enabled.
 
   Default: []
+
+*g:lists_enable_default_maps*
+  Set to |v:false| or 0 to prevent |lists.vim| from applying the default maps.
+  Useful if you want to create your own mappings.
+
+  Default: |v:true|
 
 *g:lists_todos*
   A list of TODO toggles that may be toggled with |<plug>(lists-toggle)|, which
