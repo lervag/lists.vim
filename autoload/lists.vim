@@ -115,15 +115,15 @@ function! lists#move(direction, ...) abort "{{{1
     let l:target = -1
     let l:next = l:current.next
     while !empty(l:next)
-      if l:next.indent > l:current.indent
-        let l:next = l:next.next
-        continue
+      if l:next.indent <= l:current.indent
+            \ && l:next.indent >= l:current.parent.indent
+        let l:target = l:next.indent < l:current.indent
+              \ ? l:next.lnum_end
+              \ : l:next.lnum_last
+        break
       endif
 
-      let l:target = l:next.indent < l:current.indent
-            \ ? l:next.lnum_end
-            \ : l:next.lnum_last
-      break
+      let l:next = l:next.next
     endwhile
 
     let l:target_pos[1] += l:target - l:current.lnum_last

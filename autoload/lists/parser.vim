@@ -145,7 +145,7 @@ function! s:get_tree_from_items(items) abort " {{{1
     let l:current.counter = l:counter
 
     " Update nested counter
-    if l:prev == l:parent
+    if l:prev == l:parent || empty(l:current.prev_sibling)
       let l:counter_nested = 1
     else
       if l:prev.indent > l:current.indent
