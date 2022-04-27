@@ -15,6 +15,19 @@ following features are provided. The default mappings are indicated. See the
 * `<leader>wlk` and `<leader>wlj`: Move list items up or down the list.
 * `<leader>wlu`: Remove repeated entries in a list (recursively)
 
+`lists.vim` is quite minimal and does not have a lot of available
+configuration choices. The implementation is based on the idea that list items
+are indented consistently. The indentation makes it easy to parse a list to
+determine its structure.
+
+These types of lists are currently supported:
+* Bullet lists. Bullets are either "*" or "-".
+* Numbered lists formated similar to "1.".
+* List items can be decorated with check boxes. Examples:
+  * [x] checked
+  * [ ] unchecked
+* List items can be decorated with labels like "TODO:" and "DONE:".
+
 # Installation
 
 If you use [vim-plug](https://github.com/junegunn/vim-plug), then add the
