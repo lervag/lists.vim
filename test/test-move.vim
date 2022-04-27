@@ -2,6 +2,12 @@ source init.vim
 
 silent edit examples/move_in.txt
 
+normal! 12G
+call lists#move(1)
+call lists#move(1)
+call lists#move(0)
+call lists#move(0)
+
 call lists#move(0, 5)
 call lists#move(0, 7)
 call lists#move(0, 7)
