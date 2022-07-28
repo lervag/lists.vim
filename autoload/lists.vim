@@ -5,9 +5,10 @@
 "
 
 function! lists#init() abort " {{{1
-  " Set 'comments' option for lists
+  " Set 'comments' and 'formatoptions' to work well with lists
   setlocal comments+=fb:*,f:*\ TODO:,b:*\ [\ ],b:*\ [x]
   setlocal comments+=fb:-,f:-\ TODO:,b:-\ [\ ],b:-\ [x]
+  setlocal formatoptions+=ron
 
   command! -buffer ListsMoveUp    call lists#move(0)
   command! -buffer ListsMoveDown  call lists#move(1)
