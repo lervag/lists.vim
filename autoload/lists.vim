@@ -39,9 +39,9 @@ function! lists#init() abort " {{{1
   nnoremap <silent><buffer> <plug>(lists-bullet-toggle-local) :call lists#bullet#toggle_local()<cr>
 
   " Only apply default maps if desired
-  if !g:lists_enable_default_maps | return | endif
+  if !g:lists_maps_default_enable | return | endif
 
-  for [l:rhs, l:lhs] in items({
+  for [l:rhs, l:lhs] in items(extend({
         \ '<plug>(lists-toggle)': '<c-s>',
         \ '<plug>(lists-moveup)': '<leader>wlk',
         \ '<plug>(lists-movedown)': '<leader>wlj',
@@ -55,7 +55,7 @@ function! lists#init() abort " {{{1
         \ 'x_<plug>(lists-al)': 'al',
         \ 'o_<plug>(lists-il)': 'il',
         \ 'x_<plug>(lists-il)': 'il',
-        \})
+        \}, g:lists_maps_default_override))
     if l:rhs[0] !=# '<'
       let l:mode = l:rhs[0]
       let l:rhs = l:rhs[2:]

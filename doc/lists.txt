@@ -104,9 +104,11 @@ The following is a list of the commands and mappings provided by |lists.vim|.
   The following mappings are available as visual mode and operator mode
   mappings, i.e. |xmap| and |omap|.
 
+                                                          *lists-maps-defaults*
 The default mappings are listed in the following table. To disable the default
-mappings, see |g:lists_enable_default_maps|. The map mode is indicated by the
-first letters of the various map commands (|nmap|, |imap|, |omap|, and
+mappings, see |g:lists_maps_default_enable|. They can also be overrided
+individually with |g:lists_maps_default_override|. The map mode is indicated
+by the first letters of the various map commands (|nmap|, |imap|, |omap|, and
 |xmap|).
 
    PLUG                                DEFAULT         MODE~
@@ -129,11 +131,28 @@ CONFIGURATION                                                    *lists-config*
 
   Default: []
 
-*g:lists_enable_default_maps*
+*g:lists_maps_default_enable*
   Set to |v:false| or 0 to prevent |lists.vim| from applying the default maps.
   Useful if you want to create your own mappings.
 
   Default: |v:true|
+
+*g:lists_maps_default_override*
+  A dictionary that allows to override one or more of the default mappings.
+  The dictionary keys should be one of the available mappings, possibly with
+  mode indicator. The value should be the desired map target. The available
+  mappings with default values are listed in |lists-maps-defaults|.
+
+  For example, to remap the insert-mode variant of |<plug>(lists-toggle)| to
+  `<c-t>` and the normal mode variant of |<plug>(lists-toggle)| to `<c-y>`,
+  one could do this: >
+
+    let g:lists_maps_default_override = {
+          \ 'i_<plug>(lists-toggle)': '<c-t>',
+          \ '<plug>(lists-toggle)': '<c-y>',
+          \}
+<
+  Default: `{}`
 
 *g:lists_todos*
   A list of TODO toggles that may be toggled with |<plug>(lists-toggle)|, which
