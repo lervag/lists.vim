@@ -93,6 +93,11 @@ function! s:item.toggle() abort dict "{{{1
         \ . (self.state < 0 ? '' : self.states[self.state] . ':')
         \ . '\s*\ze'
 
+  " Edge case: missing space after bullet
+  if self.text[0] =~# '\S$'
+    let self.text[0] .= ' '
+  endif
+
   let self.state = ((self.state + 2) % (len(self.states) + 1)) - 1
 
   let l:line = substitute(self.text[0], l:re_old,

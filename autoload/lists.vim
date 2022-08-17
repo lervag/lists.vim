@@ -30,7 +30,8 @@ function! lists#init() abort " {{{1
   nnoremap <silent><buffer> <plug>(lists-uniq)                :ListsUniq<cr>
   nnoremap <silent><buffer> <plug>(lists-uniq-local)          :ListsUniqLocal<cr>
   nnoremap <silent><buffer> <plug>(lists-show-item)           :ListsShowItem<cr>
-  inoremap <silent><buffer> <plug>(lists-toggle)              <esc>:call lists#new_item()<cr>
+  inoremap <silent><buffer> <plug>(lists-toggle)              <esc>:call lists#toggle_item_insertmode()<cr>
+  inoremap <silent><buffer> <plug>(lists-new-element)         <esc>:call lists#new_item()<cr>
   onoremap <silent><buffer> <plug>(lists-al)                  :call      lists#text_obj#list_element(0, 0)<cr>
   xnoremap <silent><buffer> <plug>(lists-al)                  :<c-u>call lists#text_obj#list_element(0, 1)<cr>
   onoremap <silent><buffer> <plug>(lists-il)                  :call      lists#text_obj#list_element(1, 0)<cr>
@@ -51,11 +52,14 @@ function! lists#init() abort " {{{1
         \ '<plug>(lists-bullet-toggle-all)': '<leader>wlt',
         \ '<plug>(lists-bullet-toggle-local)': '<leader>wlT',
         \ 'i_<plug>(lists-toggle)': '<c-s>',
+        \ 'i_<plug>(lists-new-element)': '<c-d>',
         \ 'o_<plug>(lists-al)': 'al',
         \ 'x_<plug>(lists-al)': 'al',
         \ 'o_<plug>(lists-il)': 'il',
         \ 'x_<plug>(lists-il)': 'il',
         \}, g:lists_maps_default_override))
+    if empty(l:lhs) | continue | endif
+
     if l:rhs[0] !=# '<'
       let l:mode = l:rhs[0]
       let l:rhs = l:rhs[2:]
@@ -227,31 +231,34 @@ function! lists#show_item(...) abort "{{{1
 endfunction
 
 " }}}1
-function! lists#new_item() abort "{{{1
+function! lists#toggle_item_insertmode() abort "{{{1
   " Go back properly to insert mode
-  let l:col_last = col('$') - 1
-  let l:col_cur = col('.')
+  let l:col_lineend = col('$') - 1
+  let l:col_cursor = col('.')
   normal! l
 
-  " Toggle TODOstate if cursor inside valid todo list item
-  let l:line = getline('.')
-  if l:line !~# '^\s*$'
+  " Toggle TODO-state only when cursor inside valid todo list item
+  if getline('.') !~# '^\s*$'
     let [l:root, l:current] = lists#parser#get_current()
 
     if !empty(l:current)
       call l:current.toggle()
-      let l:col_new = col('$') - 1
     endif
 
-    " Go back properly to insert mode
-    if l:col_cur == l:col_last
-      startinsert!
-    else
-      startinsert
-    endif
-
-    return
   endif
+
+  " Go back properly to insert mode
+  if l:col_cursor == l:col_lineend
+    startinsert!
+  else
+    startinsert
+  endif
+endfunction
+
+" }}}1
+function! lists#new_item() abort "{{{1
+  " Go back properly to insert mode
+  normal! l
 
   " Find last used list item type
   let [l:root, l:current] = lists#parser#get_previous()

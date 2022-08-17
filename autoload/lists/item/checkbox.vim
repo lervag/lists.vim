@@ -78,3 +78,10 @@ function! s:item.toggle_parents(status) abort dict "{{{1
 endfunction
 
 " }}}1
+
+function! s:item.next_header() abort dict "{{{1
+  return substitute(copy(self.header), '^\s*\zs.*', '', '')
+        \ . matchstr(self.header, '[*-]') . ' [ ] '
+endfunction
+
+" }}}1

@@ -71,7 +71,14 @@ The following is a list of the commands and mappings provided by |lists.vim|.
 
 *:ListsToggle*
 *<plug>(lists-toggle)*
-  Toggle a list item. The mapping works in both normal and insert mode.
+  Toggle a list items "status". For checkboxes, this means to toggle the
+  checkmark on/off. Elsewhere, we toggle between statuses defined in
+  |g:lists_todos|. This mapping exists in both normal and insert mode.
+
+*i_<plug>(lists-new-element)*
+  An insert mode mapping to add a new element in the current list. This is
+  useful after creating a new line below a list element to add the
+  bullet/dash/number in front, possibly with a checkbox if relevant.
 
 *:ListsToggleBullet*
 *<plug>(lists-bullet-toggle-all)*
@@ -114,6 +121,7 @@ by the first letters of the various map commands (|nmap|, |imap|, |omap|, and
    PLUG                                DEFAULT         MODE~
    ----                                -------         ----~
    |<plug>(lists-toggle)|                <c-s>           `in`
+   |i_<plug>(lists-new-element)|         <c-d>           `i`
    |<plug>(lists-moveup)|                <leader>wlk     `n`
    |<plug>(lists-movedown)|              <leader>wlj     `n`
    |<plug>(lists-uniq)|                  <leader>wlu     `n`
@@ -143,12 +151,15 @@ CONFIGURATION                                                    *lists-config*
   mode indicator. The value should be the desired map target. The available
   mappings with default values are listed in |lists-maps-defaults|.
 
-  For example, to remap the insert-mode variant of |<plug>(lists-toggle)| to
-  `<c-t>` and the normal mode variant of |<plug>(lists-toggle)| to `<c-y>`,
-  one could do this: >
+  To disable a map, one can link it to an empty string.
+
+  For example, to remap the insert-mode mapping |<plug>(lists-new-element)| to
+  `<c-t>` and the normal mode variant of |<plug>(lists-toggle)| to `<c-y>`, as
+  well as disabling the insert mode variant of the latter, one could do this: >
 
     let g:lists_maps_default_override = {
-          \ 'i_<plug>(lists-toggle)': '<c-t>',
+          \ 'i_<plug>(lists-new-element)': '<c-t>',
+          \ 'i_<plug>(lists-toggle)': '',
           \ '<plug>(lists-toggle)': '<c-y>',
           \}
 <
