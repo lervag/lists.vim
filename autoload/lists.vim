@@ -52,7 +52,7 @@ function! lists#init() abort " {{{1
         \ '<plug>(lists-bullet-toggle-all)': '<leader>wlt',
         \ '<plug>(lists-bullet-toggle-local)': '<leader>wlT',
         \ 'i_<plug>(lists-toggle)': '<c-s>',
-        \ 'i_<plug>(lists-new-element)': '<c-d>',
+        \ 'i_<plug>(lists-new-element)': '<c-a>',
         \ 'o_<plug>(lists-al)': 'al',
         \ 'x_<plug>(lists-al)': 'al',
         \ 'o_<plug>(lists-il)': 'il',
