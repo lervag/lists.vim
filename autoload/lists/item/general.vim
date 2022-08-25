@@ -94,7 +94,7 @@ function! s:item.toggle() abort dict "{{{1
         \ . '\s*\ze'
 
   " Edge case: missing space after bullet
-  if self.text[0] =~# '\S$'
+  if self.text[0] =~# self.re_item . '$' && self.text[0] =~# '\S$'
     let self.text[0] .= ' '
   endif
 
