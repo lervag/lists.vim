@@ -272,8 +272,14 @@ function! lists#new_item() abort "{{{1
     let l:cur = l:cur.next
   endwhile
 
-  call setline(line('.'), l:cur.next_header())
-  startinsert!
+  let l:line = substitute(getline('.'), '^\s*', '', '')
+  call setline(line('.'), l:cur.next_header() . l:line)
+
+  if virtcol('.') == virtcol('$') - 1
+    startinsert!
+  else
+    startinsert
+  endif
 endfunction
 
 " }}}1
