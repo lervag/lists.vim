@@ -257,14 +257,10 @@ endfunction
 
 " }}}1
 function! lists#new_item() abort "{{{1
-  " Go back properly to insert mode
-  normal! l
-
   " Find last used list item type
   let [l:root, l:current] = lists#parser#get_previous()
-  if empty(l:root)
-    startinsert
-    return
+  if empty(l:root) || l:current.lnum_start == line('.')
+    return s:resume(1)
   endif
 
   let l:cur = l:root
@@ -275,7 +271,15 @@ function! lists#new_item() abort "{{{1
   let l:line = substitute(getline('.'), '^\s*', '', '')
   call setline(line('.'), l:cur.next_header() . l:line)
 
-  if virtcol('.') == virtcol('$') - 1
+  return s:resume(1 + strchars(l:cur.next_header()) - indent('.'))
+endfunction
+
+function! s:resume(count) abort
+  for l:_ in range(a:count)
+    normal! l
+  endfor
+
+  if virtcol('.') >= virtcol('$') - 1
     startinsert!
   else
     startinsert
