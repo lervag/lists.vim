@@ -258,26 +258,22 @@ endfunction
 " }}}1
 function! lists#new_item() abort "{{{1
   " Find last used list item type
-  let [l:root, l:current] = lists#parser#get_previous()
-  if empty(l:root) || l:current.lnum_start == line('.')
-    return s:resume(1)
+  let [l:root, l:cur] = lists#parser#get_previous()
+  if empty(l:root) || l:cur.lnum_start == line('.')
+    return s:resume()
   endif
 
-  let l:cur = l:root
-  while !empty(l:cur.next)
-    let l:cur = l:cur.next
-  endwhile
-
+  let l:pos = virtcol('$') - virtcol('.')
   let l:line = substitute(getline('.'), '^\s*', '', '')
-  call setline(line('.'), l:cur.next_header() . l:line)
+  let l:header = l:cur.next_header()
+  call setline(line('.'), l:header . l:line)
+  call cursor(0, max([strchars(l:header), virtcol('$') - l:pos]))
 
-  return s:resume(1 + strchars(l:cur.next_header()) - indent('.'))
+  return s:resume()
 endfunction
 
-function! s:resume(count) abort
-  for l:_ in range(a:count)
-    normal! l
-  endfor
+function! s:resume() abort
+  normal! l
 
   if virtcol('.') >= virtcol('$') - 1
     startinsert!
