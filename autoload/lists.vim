@@ -30,7 +30,7 @@ function! lists#init() abort " {{{1
   nnoremap <silent><buffer> <plug>(lists-uniq)                :ListsUniq<cr>
   nnoremap <silent><buffer> <plug>(lists-uniq-local)          :ListsUniqLocal<cr>
   nnoremap <silent><buffer> <plug>(lists-show-item)           :ListsShowItem<cr>
-  inoremap <silent><buffer> <plug>(lists-toggle)              <esc>:call lists#toggle_item_insertmode()<cr>
+  inoremap <silent><buffer> <plug>(lists-toggle)              <esc>:call lists#toggle_insertmode()<cr>
   inoremap <silent><buffer> <plug>(lists-new-element)         <esc>:call lists#new_item()<cr>
   onoremap <silent><buffer> <plug>(lists-al)                  :call      lists#text_obj#list_element(0, 0)<cr>
   xnoremap <silent><buffer> <plug>(lists-al)                  :<c-u>call lists#text_obj#list_element(0, 1)<cr>
@@ -84,6 +84,31 @@ function! lists#toggle(...) abort "{{{1
   if empty(l:current) | return | endif
 
   call l:current.toggle()
+endfunction
+
+" }}}1
+function! lists#toggle_insertmode() abort "{{{1
+  " Go back properly to insert mode
+  let l:col_lineend = col('$') - 1
+  let l:col_cursor = col('.')
+  normal! l
+
+  " Toggle TODO-state only when cursor inside valid todo list item
+  if getline('.') !~# '^\s*$'
+    let [l:root, l:current] = lists#parser#get_current()
+
+    if !empty(l:current)
+      call l:current.toggle()
+    endif
+
+  endif
+
+  " Go back properly to insert mode
+  if l:col_cursor == l:col_lineend
+    startinsert!
+  else
+    startinsert
+  endif
 endfunction
 
 " }}}1
@@ -228,31 +253,6 @@ function! lists#show_item(...) abort "{{{1
   if empty(l:current) | return | endif
 
   call lists#log#echo(join(l:current.to_string(), "\n"))
-endfunction
-
-" }}}1
-function! lists#toggle_item_insertmode() abort "{{{1
-  " Go back properly to insert mode
-  let l:col_lineend = col('$') - 1
-  let l:col_cursor = col('.')
-  normal! l
-
-  " Toggle TODO-state only when cursor inside valid todo list item
-  if getline('.') !~# '^\s*$'
-    let [l:root, l:current] = lists#parser#get_current()
-
-    if !empty(l:current)
-      call l:current.toggle()
-    endif
-
-  endif
-
-  " Go back properly to insert mode
-  if l:col_cursor == l:col_lineend
-    startinsert!
-  else
-    startinsert
-  endif
 endfunction
 
 " }}}1
