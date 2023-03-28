@@ -38,3 +38,15 @@ function! s:item.set_bullet(new) abort dict "{{{1
 endfunction
 
 " }}}1
+function! s:item.to_checkbox() abort dict "{{{1
+  " Edge case: missing space after bullet
+  if self.text[0] =~# self.re_item . '$' && self.text[0] =~# '\S$'
+    let self.text[0] .= ' '
+  endif
+
+  let l:line = substitute(self.text[0], '^\s*[*-]\s\zs', '[ ] ', '')
+
+  call setline(self.lnum_start, l:line)
+endfunction
+
+" }}}1

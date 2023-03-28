@@ -10,12 +10,13 @@ function! lists#init() abort " {{{1
   setlocal comments+=fb:-,f:-\ TODO:,b:-\ [\ ],b:-\ [x]
   setlocal formatoptions+=ron
 
-  command! -buffer ListsMoveUp    call lists#move(0)
-  command! -buffer ListsMoveDown  call lists#move(1)
-  command! -buffer ListsToggle    call lists#toggle()
-  command! -buffer ListsUniq      call lists#uniq(0)
-  command! -buffer ListsUniqLocal call lists#uniq(1)
-  command! -buffer ListsShowItem  call lists#show_item()
+  command! -buffer ListsMoveUp         call lists#move(0)
+  command! -buffer ListsMoveDown       call lists#move(1)
+  command! -buffer ListsToggle         call lists#toggle()
+  command! -buffer ListsToggleCheckbox call lists#toggle_checkbox()
+  command! -buffer ListsUniq           call lists#uniq(0)
+  command! -buffer ListsUniqLocal      call lists#uniq(1)
+  command! -buffer ListsShowItem       call lists#show_item()
 
   command! -buffer -bang ListsToggleBullet
         \ if empty(<q-bang>) |
@@ -27,10 +28,12 @@ function! lists#init() abort " {{{1
   nnoremap <silent><buffer> <plug>(lists-moveup)              :ListsMoveUp<cr>
   nnoremap <silent><buffer> <plug>(lists-movedown)            :ListsMoveDown<cr>
   nnoremap <silent><buffer> <plug>(lists-toggle)              :ListsToggle<cr>
+  nnoremap <silent><buffer> <plug>(lists-toggle-checkbox)     :ListsToggleCheckbox<cr>
   nnoremap <silent><buffer> <plug>(lists-uniq)                :ListsUniq<cr>
   nnoremap <silent><buffer> <plug>(lists-uniq-local)          :ListsUniqLocal<cr>
   nnoremap <silent><buffer> <plug>(lists-show-item)           :ListsShowItem<cr>
   inoremap <silent><buffer> <plug>(lists-toggle)              <esc>:call lists#toggle_insertmode()<cr>
+  inoremap <silent><buffer> <plug>(lists-toggle-checkbox)     <esc>:call lists#toggle_checkbox_insertmode()<cr>
   inoremap <silent><buffer> <plug>(lists-new-element)         <esc>:call lists#new_item()<cr>
   onoremap <silent><buffer> <plug>(lists-al)                  :call      lists#text_obj#list_element(0, 0)<cr>
   xnoremap <silent><buffer> <plug>(lists-al)                  :<c-u>call lists#text_obj#list_element(0, 1)<cr>
@@ -44,6 +47,7 @@ function! lists#init() abort " {{{1
 
   for [l:rhs, l:lhs] in items(extend({
         \ '<plug>(lists-toggle)': '<c-s>',
+        \ '<plug>(lists-toggle-checkbox)': '',
         \ '<plug>(lists-moveup)': '<leader>wlk',
         \ '<plug>(lists-movedown)': '<leader>wlj',
         \ '<plug>(lists-uniq)': '<leader>wlu',
@@ -52,6 +56,7 @@ function! lists#init() abort " {{{1
         \ '<plug>(lists-bullet-toggle-all)': '<leader>wlt',
         \ '<plug>(lists-bullet-toggle-local)': '<leader>wlT',
         \ 'i_<plug>(lists-toggle)': '<c-s>',
+        \ 'i_<plug>(lists-toggle-checkbox)': '',
         \ 'i_<plug>(lists-new-element)': '<c-a>',
         \ 'o_<plug>(lists-al)': 'al',
         \ 'x_<plug>(lists-al)': 'al',
@@ -100,7 +105,6 @@ function! lists#toggle_insertmode() abort "{{{1
     if !empty(l:current)
       call l:current.toggle()
     endif
-
   endif
 
   " Go back properly to insert mode
@@ -112,6 +116,49 @@ function! lists#toggle_insertmode() abort "{{{1
 endfunction
 
 " }}}1
+function! lists#toggle_checkbox(...) abort "{{{1
+  let [l:root, l:current] = a:0 > 0
+        \ ? lists#parser#get_at(a:1)
+        \ : lists#parser#get_current()
+  if empty(l:current) | return | endif
+
+  if l:current.type ==# 'checkbox'
+    call l:current.toggle()
+  elseif has_key(l:current, 'to_checkbox')
+    call l:current.to_checkbox()
+  endif
+endfunction
+
+" }}}1
+function! lists#toggle_checkbox_insertmode() abort "{{{1
+  " Go back properly to insert mode
+  let l:col_lineend = col('$') - 1
+  let l:col_cursor = col('.')
+  normal! l
+
+  " Toggle checkbox-state only when cursor inside valid list item
+  if getline('.') !~# '^\s*$'
+    let [l:root, l:current] = lists#parser#get_current()
+
+    if !empty(l:current)
+      if l:current.type ==# 'checkbox'
+        call l:current.toggle()
+      elseif has_key(l:current, 'to_checkbox')
+        call l:current.to_checkbox()
+      endif
+    endif
+  endif
+
+  " Go back properly to insert mode
+  if l:col_cursor == l:col_lineend
+    startinsert!
+  else
+    startinsert
+  endif
+endfunction
+
+" }}}1
+
 function! lists#move(direction, ...) abort "{{{1
   let [l:root, l:current] = a:0 > 0
         \ ? lists#parser#get_at(a:1)

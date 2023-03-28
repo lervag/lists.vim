@@ -75,6 +75,11 @@ The following is a list of the commands and mappings provided by |lists.vim|.
   checkmark on/off. Elsewhere, we toggle between statuses defined in
   |g:lists_todos|. This mapping exists in both normal and insert mode.
 
+*:ListsToggleCheckbox*
+*<plug>(lists-toggle-checkbox)*
+  Toggle a checklist item. If the current item does not have a checkbox, it
+  will be added. This mapping exists in both normal and insert mode.
+
 *i_<plug>(lists-new-element)*
   An insert mode mapping to add a new element in the current list. This is
   useful after creating a new line below a list element to add the
@@ -121,6 +126,7 @@ by the first letters of the various map commands (|nmap|, |imap|, |omap|, and
    PLUG                                DEFAULT         MODE~
    ----                                -------         ----~
    |<plug>(lists-toggle)|                <c-s>           `in`
+   |<plug>(lists-toggle-checkbox)|       NONE            `in`
    |i_<plug>(lists-new-element)|         <c-a>           `i`
    |<plug>(lists-moveup)|                <leader>wlk     `n`
    |<plug>(lists-movedown)|              <leader>wlj     `n`
